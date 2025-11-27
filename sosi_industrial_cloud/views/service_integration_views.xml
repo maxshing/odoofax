@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_service_integration_form" model="ir.ui.view">
+        <field name="name">service.integration.form</field>
+        <field name="model">service.integration</field>
+        <field name="arch" type="xml">
+            <form string="Integration">
+                <header>
+                    <button name="action_test_connection" string="Test Connection" type="object" class="btn-secondary"/>
+                    <button name="action_sync_now" string="Sync Now" type="object" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="type"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="customer_id"/>
+                            <field name="project_id"/>
+                            <field name="last_sync"/>
+                        </group>
+                    </group>
+                    <group string="Connection Settings">
+                        <field name="endpoint_url"/>
+                        <field name="api_key" password="True"/>
+                        <field name="api_secret" password="True"/>
+                        <field name="sync_interval"/>
+                    </group>
+                    <notebook>
+                        <page string="Logs">
+                            <field name="log" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_service_integration_tree" model="ir.ui.view">
+        <field name="name">service.integration.tree</field>
+        <field name="model">service.integration</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="type"/>
+                <field name="customer_id"/>
+                <field name="active"/>
+                <field name="last_sync"/>
+                <field name="error_count"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_service_integration" model="ir.actions.act_window">
+        <field name="name">Integrations</field>
+        <field name="res_model">service.integration</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

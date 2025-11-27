@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_iot_data_log_form" model="ir.ui.view">
+        <field name="name">iot.data.log.form</field>
+        <field name="model">iot.data.log</field>
+        <field name="arch" type="xml">
+            <form string="IoT Data Log">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="device_id"/>
+                            <field name="device_name"/>
+                            <field name="tag_type"/>
+                            <field name="location_id"/>
+                        </group>
+                        <group>
+                            <field name="timestamp"/>
+                            <field name="value"/>
+                            <field name="value_string"/>
+                            <field name="unit"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="related_batch_id"/>
+                            <field name="quality"/>
+                            <field name="processed"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Raw Data">
+                            <field name="raw_data"/>
+                        </page>
+                        <page string="Process Notes">
+                            <field name="process_notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_iot_data_log_tree" model="ir.ui.view">
+        <field name="name">iot.data.log.tree</field>
+        <field name="model">iot.data.log</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="timestamp"/>
+                <field name="device_id"/>
+                <field name="tag_type"/>
+                <field name="value"/>
+                <field name="unit"/>
+                <field name="quality"/>
+                <field name="related_batch_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_iot_data_log_graph" model="ir.ui.view">
+        <field name="name">iot.data.log.graph</field>
+        <field name="model">iot.data.log</field>
+        <field name="arch" type="xml">
+            <graph string="IoT Data" type="line">
+                <field name="timestamp" type="col"/>
+                <field name="value" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_iot_data_log_search" model="ir.ui.view">
+        <field name="name">iot.data.log.search</field>
+        <field name="model">iot.data.log</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="device_id"/>
+                <field name="tag_type"/>
+                <field name="related_batch_id"/>
+                <filter string="Today" name="today" domain="[('timestamp','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+                <filter string="Temperature" name="temperature" domain="[('tag_type','=','temperature')]"/>
+                <filter string="Pressure" name="pressure" domain="[('tag_type','=','pressure')]"/>
+                <filter string="Flow" name="flow" domain="[('tag_type','=','flow')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Device" name="group_device" context="{'group_by':'device_id'}"/>
+                    <filter string="Tag Type" name="group_tag" context="{'group_by':'tag_type'}"/>
+                    <filter string="Batch" name="group_batch" context="{'group_by':'related_batch_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_iot_data_log" model="ir.actions.act_window">
+        <field name="name">IoT Logs</field>
+        <field name="res_model">iot.data.log</field>
+        <field name="view_mode">list,graph,form</field>
+    </record>
+</odoo>

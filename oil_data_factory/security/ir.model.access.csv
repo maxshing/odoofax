@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_oil_batch_log_user,oil.batch_log.user,model_oil_batch_log,base.group_user,1,0,0,0
+access_oil_batch_log_manager,oil.batch_log.manager,model_oil_batch_log,base.group_system,1,1,1,1
+access_iot_data_log_user,iot.data.log.user,model_iot_data_log,base.group_user,1,0,0,0
+access_iot_data_log_manager,iot.data.log.manager,model_iot_data_log,base.group_system,1,1,1,1

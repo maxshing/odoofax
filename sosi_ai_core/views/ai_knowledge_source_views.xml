@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ai_knowledge_source_form" model="ir.ui.view">
+        <field name="name">ai.knowledge_source.form</field>
+        <field name="model">ai.knowledge_source</field>
+        <field name="arch" type="xml">
+            <form string="Knowledge Source">
+                <header>
+                    <button name="action_start_indexing" string="Start Indexing" type="object" 
+                            class="btn-primary" invisible="index_status == 'indexed'"/>
+                    <field name="index_status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="type"/>
+                            <field name="category"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="source_url" widget="url"/>
+                            <field name="last_indexed"/>
+                            <field name="chunk_count"/>
+                            <field name="tags"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="File">
+                            <group>
+                                <field name="file" filename="file_name"/>
+                                <field name="file_name" invisible="1"/>
+                            </group>
+                        </page>
+                        <page string="Description">
+                            <field name="description"/>
+                        </page>
+                        <page string="Metadata">
+                            <field name="metadata"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ai_knowledge_source_tree" model="ir.ui.view">
+        <field name="name">ai.knowledge_source.tree</field>
+        <field name="model">ai.knowledge_source</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="type"/>
+                <field name="category"/>
+                <field name="index_status"/>
+                <field name="chunk_count"/>
+                <field name="last_indexed"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_ai_knowledge_source" model="ir.actions.act_window">
+        <field name="name">AI Knowledge Sources</field>
+        <field name="res_model">ai.knowledge_source</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

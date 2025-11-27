@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <!-- ============================================================ -->
+        <!-- BLENDING MODULE LOCATIONS                                    -->
+        <!-- Additional locations for automated blending workflow         -->
+        <!-- ============================================================ -->
+
+        <!-- Factory Y - Mixing Output Location -->
+        <record id="location_y_mixing_outlet" model="stock.location">
+            <field name="name">Mixing Outlet</field>
+            <field name="barcode">WH/Y/Mixing_Outlet</field>
+            <field name="location_id" ref="location_factory_y"/>
+            <field name="usage">internal</field>
+            <field name="comment">Blending output staging area for QC and transfer to filling</field>
+        </record>
+
+        <!-- Factory X - Line F3 Input Buffer -->
+        <record id="location_x_line_f3_input" model="stock.location">
+            <field name="name">Line F3 Input Buffer</field>
+            <field name="barcode">WH/X/Line_F3_Input</field>
+            <field name="location_id" ref="location_factory_x"/>
+            <field name="usage">internal</field>
+            <field name="comment">Input buffer for Feige Auto Filler (F3) - receives product from blending</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- TANK FARM D (D1-D10) - BASE OIL STORAGE                     -->
+        <!-- Reconfigure D-tanks as dedicated base oil storage           -->
+        <!-- ============================================================ -->
+
+        <!-- Update D01 as Base Oil storage -->
+        <record id="location_tank_d01" model="stock.location">
+            <field name="name">Tank D01 - Base Oil SN150</field>
+            <field name="comment">Base Oil Storage - SN150 Group I for blending</field>
+        </record>
+
+        <!-- Update D02 as Base Oil storage -->
+        <record id="location_tank_d02" model="stock.location">
+            <field name="name">Tank D02 - Base Oil SN500</field>
+            <field name="comment">Base Oil Storage - SN500 Group I for blending</field>
+        </record>
+
+        <!-- Update D03 as Base Oil storage -->
+        <record id="location_tank_d03" model="stock.location">
+            <field name="name">Tank D03 - Base Oil BS150</field>
+            <field name="comment">Base Oil Storage - BS150 Bright Stock for blending</field>
+        </record>
+
+        <!-- Update D04 as Base Oil storage -->
+        <record id="location_tank_d04" model="stock.location">
+            <field name="name">Tank D04 - Base Oil SN100</field>
+            <field name="comment">Base Oil Storage - SN100 Light Grade for blending</field>
+        </record>
+
+        <!-- Update D05 as Base Oil storage -->
+        <record id="location_tank_d05" model="stock.location">
+            <field name="name">Tank D05 - Base Oil SN350</field>
+            <field name="comment">Base Oil Storage - SN350 Medium Grade for blending</field>
+        </record>
+
+        <!-- Update D06 as Base Oil storage -->
+        <record id="location_tank_d06" model="stock.location">
+            <field name="name">Tank D06 - PAO Synthetic</field>
+            <field name="comment">Base Oil Storage - PAO Synthetic Base for premium blends</field>
+        </record>
+
+        <!-- Update D07 as Additive storage -->
+        <record id="location_tank_d07" model="stock.location">
+            <field name="name">Tank D07 - Additive Package A</field>
+            <field name="comment">Additive Storage - Multi-purpose additive package</field>
+        </record>
+
+        <!-- Update D08 as Additive storage -->
+        <record id="location_tank_d08" model="stock.location">
+            <field name="name">Tank D08 - Additive Package B</field>
+            <field name="comment">Additive Storage - Industrial additive package</field>
+        </record>
+
+        <!-- Update D09 as Additive storage -->
+        <record id="location_tank_d09" model="stock.location">
+            <field name="name">Tank D09 - VI Improver</field>
+            <field name="comment">Additive Storage - Viscosity Index Improver</field>
+        </record>
+
+        <!-- Update D10 as Additive storage -->
+        <record id="location_tank_d10" model="stock.location">
+            <field name="name">Tank D10 - Pour Point Depressant</field>
+            <field name="comment">Additive Storage - Pour Point Depressant concentrate</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- IOT POINTS FOR BLENDING MODULE                              -->
+        <!-- Sensors for quality control and valve automation            -->
+        <!-- ============================================================ -->
+
+        <!-- Viscosity Meter at Mixing Tank outlet -->
+        <record id="iot_point_vit_m1" model="chemical.iot.point">
+            <field name="name">VIT-M1</field>
+            <field name="description">Viscosity Meter - Mixing Tank M1 Outlet</field>
+            <field name="point_type">viscosity</field>
+            <field name="location_type">mixer</field>
+            <field name="workcenter_id" ref="workcenter_m1"/>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Moisture Analyzer at Mixing Tank -->
+        <record id="iot_point_mit_m1" model="chemical.iot.point">
+            <field name="name">MIT-M1</field>
+            <field name="description">Moisture Analyzer - Mixing Tank M1</field>
+            <field name="point_type">moisture</field>
+            <field name="location_type">mixer</field>
+            <field name="workcenter_id" ref="workcenter_m1"/>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Particle Counter at Filtration output -->
+        <record id="iot_point_pcs_filter" model="chemical.iot.point">
+            <field name="name">PCS-FILT</field>
+            <field name="description">Particle Counter - Post-Filtration</field>
+            <field name="point_type">particle</field>
+            <field name="location_type">pipeline</field>
+            <field name="state">active</field>
+        </record>
+
+        <!-- Valve Controllers for D1-D10 outlets -->
+        <record id="iot_point_vlv_d01" model="chemical.iot.point">
+            <field name="name">VLV-D01</field>
+            <field name="description">Outlet Valve Controller - Tank D01</field>
+            <field name="point_type">valve</field>
+            <field name="location_type">tank_outlet</field>
+            <field name="tank_location_id" ref="location_tank_d01"/>
+            <field name="state">active</field>
+        </record>
+
+        <record id="iot_point_vlv_d02" model="chemical.iot.point">
+            <field name="name">VLV-D02</field>
+            <field name="description">Outlet Valve Controller - Tank D02</field>
+            <field name="point_type">valve</field>
+            <field name="location_type">tank_outlet</field>
+            <field name="tank_location_id" ref="location_tank_d02"/>
+            <field name="state">active</field>
+        </record>
+
+        <record id="iot_point_vlv_d03" model="chemical.iot.point">
+            <field name="name">VLV-D03</field>
+            <field name="description">Outlet Valve Controller - Tank D03</field>
+            <field name="point_type">valve</field>
+            <field name="location_type">tank_outlet</field>
+            <field name="tank_location_id" ref="location_tank_d03"/>
+            <field name="state">active</field>
+        </record>
+
+        <record id="iot_point_vlv_d04" model="chemical.iot.point">
+            <field name="name">VLV-D04</field>
+            <field name="description">Outlet Valve Controller - Tank D04</field>
+            <field name="point_type">valve</field>
+            <field name="location_type">tank_outlet</field>
+            <field name="tank_location_id" ref="location_tank_d04"/>
+            <field name="state">active</field>
+        </record>
+
+        <record id="iot_point_vlv_d05" model="chemical.iot.point">
+            <field name="name">VLV-D05</field>
+            <field name="description">Outlet Valve Controller - Tank D05</field>
+            <field name="point_type">valve</field>
+            <field name="location_type">tank_outlet</field>
+            <field name="tank_location_id" ref="location_tank_d05"/>
+            <field name="state">active</field>
+        </record>
+
+        <record id="iot_point_vlv_d06" model="chemical.iot.point">
+            <field name="name">VLV-D06</field>
+            <field name="description">Outlet Valve Controller - Tank D06</field>
+            <field name="point_type">valve</field>
+            <field name="location_type">tank_outlet</field>
+            <field name="tank_location_id" ref="location_tank_d06"/>
+            <field name="state">active</field>
+        </record>
+
+        <record id="iot_point_vlv_d07" model="chemical.iot.point">
+            <field name="name">VLV-D07</field>
+            <field name="description">Outlet Valve Controller - Tank D07</field>
+            <field name="point_type">valve</field>
+            <field name="location_type">tank_outlet</field>
+            <field name="tank_location_id" ref="location_tank_d07"/>
+            <field name="state">active</field>
+        </record>
+
+        <record id="iot_point_vlv_d08" model="chemical.iot.point">
+            <field name="name">VLV-D08</field>
+            <field name="description">Outlet Valve Controller - Tank D08</field>
+            <field name="point_type">valve</field>
+            <field name="location_type">tank_outlet</field>
+            <field name="tank_location_id" ref="location_tank_d08"/>
+            <field name="state">active</field>
+        </record>
+
+        <record id="iot_point_vlv_d09" model="chemical.iot.point">
+            <field name="name">VLV-D09</field>
+            <field name="description">Outlet Valve Controller - Tank D09</field>
+            <field name="point_type">valve</field>
+            <field name="location_type">tank_outlet</field>
+            <field name="tank_location_id" ref="location_tank_d09"/>
+            <field name="state">active</field>
+        </record>
+
+        <record id="iot_point_vlv_d10" model="chemical.iot.point">
+            <field name="name">VLV-D10</field>
+            <field name="description">Outlet Valve Controller - Tank D10</field>
+            <field name="point_type">valve</field>
+            <field name="location_type">tank_outlet</field>
+            <field name="tank_location_id" ref="location_tank_d10"/>
+            <field name="state">active</field>
+        </record>
+
+    </data>
+</odoo>

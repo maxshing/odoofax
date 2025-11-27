@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ============================================================ -->
+        <!-- MAINTENANCE EQUIPMENT CATEGORY                               -->
+        <!-- ============================================================ -->
+
+        <record id="equipment_category_pump" model="maintenance.equipment.category">
+            <field name="name">Pumps</field>
+            <field name="technician_user_id" ref="base.user_admin"/>
+            <field name="color">1</field>
+        </record>
+
+        <record id="equipment_category_filler" model="maintenance.equipment.category">
+            <field name="name">Filling Machines</field>
+            <field name="technician_user_id" ref="base.user_admin"/>
+            <field name="color">2</field>
+        </record>
+
+        <record id="equipment_category_mixer" model="maintenance.equipment.category">
+            <field name="name">Mixing Tanks</field>
+            <field name="technician_user_id" ref="base.user_admin"/>
+            <field name="color">3</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- WORKCENTER TAGS (for BOM routing logic)                      -->
+        <!-- ============================================================ -->
+
+        <record id="workcenter_tag_drum_line" model="mrp.workcenter.tag">
+            <field name="name">Drum Line</field>
+            <field name="color">2</field>
+        </record>
+
+        <record id="workcenter_tag_small_pack_line" model="mrp.workcenter.tag">
+            <field name="name">Small Pack Line</field>
+            <field name="color">4</field>
+        </record>
+
+        <record id="workcenter_tag_mixing" model="mrp.workcenter.tag">
+            <field name="name">Mixing</field>
+            <field name="color">5</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- MANUFACTURING WORK CENTERS - FACTORY X (Filling/Packaging)  -->
+        <!-- Located in WH/X                                              -->
+        <!-- ============================================================ -->
+
+        <!-- f1: Fully Auto Drum Filler (大桶全自動灌裝機) -->
+        <record id="workcenter_f1" model="mrp.workcenter">
+            <field name="name">f1: Fully Auto Drum Filler</field>
+            <field name="code">F1</field>
+            <field name="note">大桶全自動灌裝機 - High capacity fully automated drum filling line. Located in Factory X (WH/X).</field>
+            <field name="time_efficiency">100</field>
+            <field name="oee_target">85</field>
+            <field name="capacity">1</field>
+            <field name="sequence">1</field>
+            <field name="active">True</field>
+            <field name="color">2</field>
+            <field name="tag_ids" eval="[(6, 0, [ref('workcenter_tag_drum_line')])]"/>
+        </record>
+
+        <!-- f2: Semi-Auto Drum Filler (大桶半自動灌裝機) -->
+        <record id="workcenter_f2" model="mrp.workcenter">
+            <field name="name">f2: Semi-Auto Drum Filler</field>
+            <field name="code">F2</field>
+            <field name="note">大桶半自動灌裝機 - Flexible semi-automatic filling for custom orders. Located in Factory X (WH/X).</field>
+            <field name="time_efficiency">80</field>
+            <field name="oee_target">75</field>
+            <field name="capacity">1</field>
+            <field name="sequence">2</field>
+            <field name="active">True</field>
+            <field name="color">3</field>
+            <field name="tag_ids" eval="[(6, 0, [ref('workcenter_tag_drum_line')])]"/>
+        </record>
+
+        <!-- f3: Feige Auto Filler (feige全自動灌裝機) -->
+        <record id="workcenter_f3" model="mrp.workcenter">
+            <field name="name">f3: Feige Auto Filler</field>
+            <field name="code">F3</field>
+            <field name="note">feige全自動灌裝機 - Precision filling machine for high-accuracy requirements. Located in Factory X (WH/X).</field>
+            <field name="time_efficiency">95</field>
+            <field name="oee_target">90</field>
+            <field name="capacity">1</field>
+            <field name="sequence">3</field>
+            <field name="active">True</field>
+            <field name="color">4</field>
+            <field name="tag_ids" eval="[(6, 0, [ref('workcenter_tag_drum_line')])]"/>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- MANUFACTURING WORK CENTERS - FACTORY Y (Mixing/Blending)    -->
+        <!-- Located in WH/Y                                              -->
+        <!-- ============================================================ -->
+
+        <!-- m1: Mixing Tank 1 (攪拌槽1) -->
+        <record id="workcenter_m1" model="mrp.workcenter">
+            <field name="name">m1: Mixing Tank 1</field>
+            <field name="code">M1</field>
+            <field name="note">攪拌槽1 - Primary mixing/blending tank. Located in Factory Y (WH/Y).</field>
+            <field name="time_efficiency">100</field>
+            <field name="oee_target">80</field>
+            <field name="capacity">1</field>
+            <field name="sequence">10</field>
+            <field name="active">True</field>
+            <field name="color">5</field>
+            <field name="tag_ids" eval="[(6, 0, [ref('workcenter_tag_mixing')])]"/>
+        </record>
+
+        <!-- m2: Mixing Tank 2 (攪拌槽2) -->
+        <record id="workcenter_m2" model="mrp.workcenter">
+            <field name="name">m2: Mixing Tank 2</field>
+            <field name="code">M2</field>
+            <field name="note">攪拌槽2 - Secondary mixing/blending tank. Located in Factory Y (WH/Y).</field>
+            <field name="time_efficiency">100</field>
+            <field name="oee_target">80</field>
+            <field name="capacity">1</field>
+            <field name="sequence">11</field>
+            <field name="active">True</field>
+            <field name="color">5</field>
+            <field name="tag_ids" eval="[(6, 0, [ref('workcenter_tag_mixing')])]"/>
+        </record>
+
+        <!-- m3: Mixing Tank 3 (攪拌槽3) -->
+        <record id="workcenter_m3" model="mrp.workcenter">
+            <field name="name">m3: Mixing Tank 3</field>
+            <field name="code">M3</field>
+            <field name="note">攪拌槽3 - Tertiary mixing/blending tank. Located in Factory Y (WH/Y).</field>
+            <field name="time_efficiency">100</field>
+            <field name="oee_target">80</field>
+            <field name="capacity">1</field>
+            <field name="sequence">12</field>
+            <field name="active">True</field>
+            <field name="color">5</field>
+            <field name="tag_ids" eval="[(6, 0, [ref('workcenter_tag_mixing')])]"/>
+        </record>
+
+        <!-- m4: Mixing Tank 4 (攪拌槽4) -->
+        <record id="workcenter_m4" model="mrp.workcenter">
+            <field name="name">m4: Mixing Tank 4</field>
+            <field name="code">M4</field>
+            <field name="note">攪拌槽4 - Fourth mixing/blending tank. Located in Factory Y (WH/Y).</field>
+            <field name="time_efficiency">100</field>
+            <field name="oee_target">80</field>
+            <field name="capacity">1</field>
+            <field name="sequence">13</field>
+            <field name="active">True</field>
+            <field name="color">5</field>
+            <field name="tag_ids" eval="[(6, 0, [ref('workcenter_tag_mixing')])]"/>
+        </record>
+
+        <!-- m5: Mixing Tank 5 (攪拌槽5) -->
+        <record id="workcenter_m5" model="mrp.workcenter">
+            <field name="name">m5: Mixing Tank 5</field>
+            <field name="code">M5</field>
+            <field name="note">攪拌槽5 - Fifth mixing/blending tank. Located in Factory Y (WH/Y).</field>
+            <field name="time_efficiency">100</field>
+            <field name="oee_target">80</field>
+            <field name="capacity">1</field>
+            <field name="sequence">14</field>
+            <field name="active">True</field>
+            <field name="color">5</field>
+            <field name="tag_ids" eval="[(6, 0, [ref('workcenter_tag_mixing')])]"/>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- MANUFACTURING WORK CENTERS - FACTORY Z (Small Packaging)    -->
+        <!-- Located in WH/Z                                              -->
+        <!-- ============================================================ -->
+
+        <!-- f4: Semi-Auto Small Package Filler (小包裝半自動灌裝機) -->
+        <record id="workcenter_f4" model="mrp.workcenter">
+            <field name="name">f4: Semi-Auto Small Package Filler</field>
+            <field name="code">F4</field>
+            <field name="note">小包裝半自動灌裝機 - Used for non-drum packaging (pails, cans, bottles). Located in Factory Z (WH/Z).</field>
+            <field name="time_efficiency">90</field>
+            <field name="oee_target">80</field>
+            <field name="capacity">1</field>
+            <field name="sequence">20</field>
+            <field name="active">True</field>
+            <field name="color">6</field>
+            <field name="tag_ids" eval="[(6, 0, [ref('workcenter_tag_small_pack_line')])]"/>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- FLOW EQUIPMENT - PUMPS (maintenance.equipment)               -->
+        <!-- Linked to specific source tanks via location_ids             -->
+        <!-- ============================================================ -->
+
+        <!-- pump1: Links to WH/Z/Tank/A01, WH/Z/Tank/A02 -->
+        <record id="equipment_pump1" model="maintenance.equipment">
+            <field name="name">Pump 1</field>
+            <field name="category_id" ref="equipment_category_pump"/>
+            <field name="equipment_type">pump</field>
+            <field name="is_cross_building">False</field>
+            <field name="note">Pump serving Tank Farm A (A01-A02) in Factory Z. Source tanks: WH/Z/Tank/A01, WH/Z/Tank/A02.</field>
+            <field name="location_ids" eval="[(6, 0, [ref('location_tank_a01'), ref('location_tank_a02')])]"/>
+        </record>
+
+        <!-- pump2: Links to WH/Z/Tank/A03, WH/Z/Tank/A04 -->
+        <record id="equipment_pump2" model="maintenance.equipment">
+            <field name="name">Pump 2</field>
+            <field name="category_id" ref="equipment_category_pump"/>
+            <field name="equipment_type">pump</field>
+            <field name="is_cross_building">False</field>
+            <field name="note">Pump serving Tank Farm A (A03-A04) in Factory Z. Source tanks: WH/Z/Tank/A03, WH/Z/Tank/A04.</field>
+            <field name="location_ids" eval="[(6, 0, [ref('location_tank_a03'), ref('location_tank_a04')])]"/>
+        </record>
+
+        <!-- pump3: Links to WH/Z/Tank/A05, WH/Z/Tank/A06 -->
+        <record id="equipment_pump3" model="maintenance.equipment">
+            <field name="name">Pump 3</field>
+            <field name="category_id" ref="equipment_category_pump"/>
+            <field name="equipment_type">pump</field>
+            <field name="is_cross_building">False</field>
+            <field name="note">Pump serving Tank Farm A (A05-A06) in Factory Z. Source tanks: WH/Z/Tank/A05, WH/Z/Tank/A06.</field>
+            <field name="location_ids" eval="[(6, 0, [ref('location_tank_a05'), ref('location_tank_a06')])]"/>
+        </record>
+
+        <!-- pump4: CROSS-BUILDING CRITICAL ASSET -->
+        <!-- Links to WH/Z/Tank/A07, WH/Z/Tank/A08 AND WH/Y/Tank/B01, WH/Y/Tank/B02 -->
+        <record id="equipment_pump4" model="maintenance.equipment">
+            <field name="name">Pump 4</field>
+            <field name="category_id" ref="equipment_category_pump"/>
+            <field name="equipment_type">pump</field>
+            <field name="is_cross_building">True</field>
+            <field name="note">⚠️ CROSS-BUILDING CRITICAL ASSET ⚠️
+
+This pump serves FOUR tanks across TWO buildings:
+- Factory Z: WH/Z/Tank/A07, WH/Z/Tank/A08
+- Factory Y: WH/Y/Tank/B01, WH/Y/Tank/B02
+
+Maintenance coordination required across both buildings.
+Priority asset for scheduling and spare parts inventory.</field>
+            <field name="location_ids" eval="[(6, 0, [ref('location_tank_a07'), ref('location_tank_a08'), ref('location_tank_b01'), ref('location_tank_b02')])]"/>
+        </record>
+
+        <!-- pump5: Links to WH/Y/Tank/B03, WH/Y/Tank/B04 -->
+        <record id="equipment_pump5" model="maintenance.equipment">
+            <field name="name">Pump 5</field>
+            <field name="category_id" ref="equipment_category_pump"/>
+            <field name="equipment_type">pump</field>
+            <field name="is_cross_building">False</field>
+            <field name="note">Pump serving Tank Farm B (B03-B04) in Factory Y. Source tanks: WH/Y/Tank/B03, WH/Y/Tank/B04.</field>
+            <field name="location_ids" eval="[(6, 0, [ref('location_tank_b03'), ref('location_tank_b04')])]"/>
+        </record>
+
+        <!-- pump6: Links to WH/Y/Tank/B05, WH/Y/Tank/B06 -->
+        <record id="equipment_pump6" model="maintenance.equipment">
+            <field name="name">Pump 6</field>
+            <field name="category_id" ref="equipment_category_pump"/>
+            <field name="equipment_type">pump</field>
+            <field name="is_cross_building">False</field>
+            <field name="note">Pump serving Tank Farm B (B05-B06) in Factory Y. Source tanks: WH/Y/Tank/B05, WH/Y/Tank/B06.</field>
+            <field name="location_ids" eval="[(6, 0, [ref('location_tank_b05'), ref('location_tank_b06')])]"/>
+        </record>
+
+    </data>
+</odoo>

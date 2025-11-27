@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Menu -->
+    <menuitem id="menu_sosi_academy_root"
+              name="SOSI Academy"
+              web_icon="sosi_academy,static/description/icon.png"
+              sequence="100"/>
+
+    <!-- Schools Menu -->
+    <menuitem id="menu_edu_school"
+              name="Schools"
+              parent="menu_sosi_academy_root"
+              action="action_edu_school"
+              sequence="10"/>
+
+    <!-- Projects Menu -->
+    <menuitem id="menu_edu_project"
+              name="Projects"
+              parent="menu_sosi_academy_root"
+              action="action_edu_project"
+              sequence="20"/>
+
+    <!-- Visits Menu -->
+    <menuitem id="menu_edu_visit"
+              name="Factory Visits"
+              parent="menu_sosi_academy_root"
+              action="action_edu_visit"
+              sequence="30"/>
+
+    <!-- Datasets Menu -->
+    <menuitem id="menu_edu_dataset"
+              name="Datasets"
+              parent="menu_sosi_academy_root"
+              action="action_edu_dataset"
+              sequence="40"/>
+</odoo>
