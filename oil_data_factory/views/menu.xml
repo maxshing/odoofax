@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_oil_data_factory_root"
+              name="Oil Data Factory"
+              web_icon="oil_data_factory,static/description/icon.png"
+              sequence="130"/>
+
+    <menuitem id="menu_oil_batch_log"
+              name="Batch Logs"
+              parent="menu_oil_data_factory_root"
+              action="action_oil_batch_log"
+              sequence="10"/>
+
+    <menuitem id="menu_iot_data_log"
+              name="IoT Logs"
+              parent="menu_oil_data_factory_root"
+              action="action_iot_data_log"
+              sequence="20"/>
+</odoo>

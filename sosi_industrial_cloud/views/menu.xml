@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_sosi_industrial_cloud_root"
+              name="SOSI Industrial Cloud"
+              web_icon="sosi_industrial_cloud,static/description/icon.png"
+              sequence="110"/>
+
+    <menuitem id="menu_service_package"
+              name="Service Packages"
+              parent="menu_sosi_industrial_cloud_root"
+              action="action_service_package"
+              sequence="10"/>
+
+    <menuitem id="menu_service_integration"
+              name="Integrations"
+              parent="menu_sosi_industrial_cloud_root"
+              action="action_service_integration"
+              sequence="20"/>
+
+    <menuitem id="menu_service_project"
+              name="Implementation Projects"
+              parent="menu_sosi_industrial_cloud_root"
+              action="action_service_project"
+              sequence="30"/>
+</odoo>

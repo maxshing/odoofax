@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_edu_school_user,edu.school.user,model_edu_school,base.group_user,1,0,0,0
+access_edu_school_manager,edu.school.manager,model_edu_school,base.group_system,1,1,1,1
+access_edu_project_user,edu.project.user,model_edu_project,base.group_user,1,0,0,0
+access_edu_project_manager,edu.project.manager,model_edu_project,base.group_system,1,1,1,1
+access_edu_visit_user,edu.visit.user,model_edu_visit,base.group_user,1,0,0,0
+access_edu_visit_manager,edu.visit.manager,model_edu_visit,base.group_system,1,1,1,1
+access_edu_dataset_user,edu.dataset.user,model_edu_dataset,base.group_user,1,0,0,0
+access_edu_dataset_manager,edu.dataset.manager,model_edu_dataset,base.group_system,1,1,1,1

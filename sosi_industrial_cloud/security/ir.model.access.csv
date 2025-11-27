@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_service_package_user,service.package.user,model_service_package,base.group_user,1,0,0,0
+access_service_package_manager,service.package.manager,model_service_package,base.group_system,1,1,1,1
+access_service_integration_user,service.integration.user,model_service_integration,base.group_user,1,0,0,0
+access_service_integration_manager,service.integration.manager,model_service_integration,base.group_system,1,1,1,1
+access_service_project_user,service.project.user,model_service_project,base.group_user,1,0,0,0
+access_service_project_manager,service.project.manager,model_service_project,base.group_system,1,1,1,1

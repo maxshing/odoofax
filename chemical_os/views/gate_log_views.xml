@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- GATE LOG (LPR) VIEWS                                         -->
+    <!-- ============================================================ -->
+
+    <!-- Gate Log Tree View -->
+    <record id="view_chemical_gate_log_tree" model="ir.ui.view">
+        <field name="name">chemical.gate.log.tree</field>
+        <field name="model">chemical.gate.log</field>
+        <field name="arch" type="xml">
+            <list default_order="timestamp desc" decoration-success="status=='matched'" decoration-warning="status=='unmatched'" decoration-danger="status=='denied'">
+                <field name="timestamp"/>
+                <field name="plate_number"/>
+                <field name="gate_location_id"/>
+                <field name="action"/>
+                <field name="status" widget="badge"/>
+                <field name="linked_picking_id"/>
+                <field name="linked_partner_id"/>
+                <field name="alert_sent"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Gate Log Form View -->
+    <record id="view_chemical_gate_log_form" model="ir.ui.view">
+        <field name="name">chemical.gate.log.form</field>
+        <field name="model">chemical.gate.log</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_manual_approve" type="object" string="Manual Approve" class="oe_highlight" invisible="status != 'unmatched'"/>
+                    <button name="action_deny_access" type="object" string="Deny Access" class="btn-danger" invisible="status != 'unmatched'"/>
+                    <field name="status" widget="statusbar" statusbar_visible="matched,unmatched,manual,denied"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="plate_number" placeholder="License Plate"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Event Details">
+                            <field name="timestamp"/>
+                            <field name="gate_location_id"/>
+                            <field name="gate_code"/>
+                            <field name="action"/>
+                        </group>
+                        <group string="Shipment Match">
+                            <field name="linked_picking_id"/>
+                            <field name="linked_partner_id"/>
+                            <field name="alert_sent"/>
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Gate Log Search View -->
+    <record id="view_chemical_gate_log_search" model="ir.ui.view">
+        <field name="name">chemical.gate.log.search</field>
+        <field name="model">chemical.gate.log</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="plate_number"/>
+                <field name="gate_location_id"/>
+                <field name="linked_picking_id"/>
+                <field name="linked_partner_id"/>
+                <filter string="Today" name="today" domain="[('timestamp', '>=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+                <filter string="Matched" name="matched" domain="[('status', '=', 'matched')]"/>
+                <filter string="Alerts" name="alerts" domain="[('status', '=', 'unmatched')]"/>
+                <separator/>
+                <filter string="Entry" name="entry" domain="[('action', '=', 'entry')]"/>
+                <filter string="Exit" name="exit" domain="[('action', '=', 'exit')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Gate" name="group_gate" context="{'group_by': 'gate_location_id'}"/>
+                    <filter string="Status" name="group_status" context="{'group_by': 'status'}"/>
+                    <filter string="Date" name="group_date" context="{'group_by': 'timestamp:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Gate Log Action -->
+    <record id="action_chemical_gate_log" model="ir.actions.act_window">
+        <field name="name">Gate Access Logs</field>
+        <field name="res_model">chemical.gate.log</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_today': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No gate access logs yet
+            </p>
+            <p>
+                Gate logs are automatically created when LPR cameras detect vehicles.
+            </p>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- ACCESS ZONE VIEWS                                            -->
+    <!-- ============================================================ -->
+
+    <!-- Access Zone Tree View -->
+    <record id="view_chemical_access_zone_tree" model="ir.ui.view">
+        <field name="name">chemical.access.zone.tree</field>
+        <field name="model">chemical.access.zone</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="building"/>
+                <field name="zone_type" widget="badge"/>
+                <field name="is_hazardous"/>
+                <field name="access_log_count"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Access Zone Form View -->
+    <record id="view_chemical_access_zone_form" model="ir.ui.view">
+        <field name="name">chemical.access.zone.form</field>
+        <field name="model">chemical.access.zone</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_access_logs" type="object" class="oe_stat_button" icon="fa-history">
+                            <field name="access_log_count" string="Access Logs" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Hazardous" bg_color="bg-danger" invisible="not is_hazardous"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Zone Name"/>
+                        </h1>
+                        <label for="code"/>
+                        <h2>
+                            <field name="code" placeholder="Zone Code"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group string="Location">
+                            <field name="building"/>
+                            <field name="zone_type"/>
+                            <field name="location_id"/>
+                            <field name="max_occupancy"/>
+                        </group>
+                        <group string="Status">
+                            <field name="is_hazardous"/>
+                            <field name="active"/>
+                            <field name="sequence"/>
+                        </group>
+                    </group>
+                    <group string="Requirements" invisible="not is_hazardous">
+                        <field name="required_certification_ids" widget="many2many_tags"/>
+                        <field name="required_ppe"/>
+                    </group>
+                    <notebook>
+                        <page string="Authorized Employees" name="employees">
+                            <field name="employee_ids" widget="many2many_tags"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Access Zone Action -->
+    <record id="action_chemical_access_zone" model="ir.actions.act_window">
+        <field name="name">Access Zones</field>
+        <field name="res_model">chemical.access.zone</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- ACCESS LOG VIEWS                                             -->
+    <!-- ============================================================ -->
+
+    <!-- Access Log Tree View -->
+    <record id="view_chemical_access_log_tree" model="ir.ui.view">
+        <field name="name">chemical.access.log.tree</field>
+        <field name="model">chemical.access.log</field>
+        <field name="arch" type="xml">
+            <list default_order="timestamp desc" decoration-success="result=='granted'" decoration-danger="result=='denied'">
+                <field name="timestamp"/>
+                <field name="employee_id"/>
+                <field name="rfid_card_id"/>
+                <field name="zone_id"/>
+                <field name="reader_location"/>
+                <field name="action"/>
+                <field name="result" widget="badge"/>
+                <field name="denial_reason"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Access Log Form View -->
+    <record id="view_chemical_access_log_form" model="ir.ui.view">
+        <field name="name">chemical.access.log.form</field>
+        <field name="model">chemical.access.log</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group string="Employee">
+                            <field name="employee_id"/>
+                            <field name="rfid_card_id"/>
+                        </group>
+                        <group string="Access Details">
+                            <field name="zone_id"/>
+                            <field name="reader_location"/>
+                            <field name="timestamp"/>
+                            <field name="action"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Result">
+                            <field name="result"/>
+                            <field name="denial_reason" invisible="result != 'denied'"/>
+                            <field name="alert_sent"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Access Log Search View -->
+    <record id="view_chemical_access_log_search" model="ir.ui.view">
+        <field name="name">chemical.access.log.search</field>
+        <field name="model">chemical.access.log</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id"/>
+                <field name="rfid_card_id"/>
+                <field name="zone_id"/>
+                <filter string="Today" name="today" domain="[('timestamp', '>=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+                <filter string="Granted" name="granted" domain="[('result', '=', 'granted')]"/>
+                <filter string="Denied" name="denied" domain="[('result', '=', 'denied')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Employee" name="group_employee" context="{'group_by': 'employee_id'}"/>
+                    <filter string="Zone" name="group_zone" context="{'group_by': 'zone_id'}"/>
+                    <filter string="Result" name="group_result" context="{'group_by': 'result'}"/>
+                    <filter string="Date" name="group_date" context="{'group_by': 'timestamp:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Access Log Action -->
+    <record id="action_chemical_access_log" model="ir.actions.act_window">
+        <field name="name">Access Logs</field>
+        <field name="res_model">chemical.access.log</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_today': 1}</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- HR EMPLOYEE EXTENSION                                        -->
+    <!-- ============================================================ -->
+
+    <record id="view_hr_employee_form_access_extension" model="ir.ui.view">
+        <field name="name">hr.employee.form.access.extension</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='oe_button_box']" position="inside">
+                <button name="action_view_access_logs" type="object" class="oe_stat_button" icon="fa-key">
+                    <field name="access_zone_count" string="Zones" widget="statinfo"/>
+                </button>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <notebook position="inside">
+                    <page string="Access Control" name="access_control">
+                        <group>
+                            <group string="RFID Badge">
+                                <field name="barcode" string="Badge ID (RFID)"/>
+                                <field name="last_access_time" readonly="1"/>
+                                <field name="last_access_zone" readonly="1"/>
+                            </group>
+                            <group string="Authorized Zones">
+                                <field name="access_zone_ids" widget="many2many_tags" nolabel="1"/>
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
