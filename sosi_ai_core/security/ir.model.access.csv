@@ -1,7 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_ai_knowledge_source_user,ai.knowledge_source.user,model_ai_knowledge_source,base.group_user,1,0,0,0
-access_ai_knowledge_source_manager,ai.knowledge_source.manager,model_ai_knowledge_source,base.group_system,1,1,1,1
-access_ai_question_log_user,ai.question_log.user,model_ai_question_log,base.group_user,1,1,1,0
-access_ai_question_log_manager,ai.question_log.manager,model_ai_question_log,base.group_system,1,1,1,1
-access_ai_model_registry_user,ai.model_registry.user,model_ai_model_registry,base.group_user,1,0,0,0
-access_ai_model_registry_manager,ai.model_registry.manager,model_ai_model_registry,base.group_system,1,1,1,1
