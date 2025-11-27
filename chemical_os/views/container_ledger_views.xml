@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Container Ledger Tree View -->
+    <record id="chemical_container_ledger_view_tree" model="ir.ui.view">
+        <field name="name">chemical.container.ledger.view.tree</field>
+        <field name="model">chemical.container.ledger</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="partner_id"/>
+                <field name="container_spec_id"/>
+                <field name="balance_loaned" sum="Total Loaned"/>
+                <field name="balance_customer_owned" sum="Total Customer Owned"/>
+                <field name="period_loaned" optional="show"/>
+                <field name="period_returned" optional="show"/>
+                <field name="total_deposit" sum="Total Deposit"/>
+                <field name="last_movement_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Container Ledger Form View -->
+    <record id="chemical_container_ledger_view_form" model="ir.ui.view">
+        <field name="name">chemical.container.ledger.view.form</field>
+        <field name="model">chemical.container.ledger</field>
+        <field name="arch" type="xml">
+            <form string="Container Ledger">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    
+                    <group>
+                        <group string="Account Details">
+                            <field name="partner_id"/>
+                            <field name="container_spec_id"/>
+                            <field name="last_movement_date" readonly="1"/>
+                        </group>
+                        <group string="Balance Summary" class="oe_highlight">
+                            <field name="balance_loaned" class="oe_read_only"/>
+                            <field name="balance_customer_owned" class="oe_read_only"/>
+                            <field name="total_deposit" readonly="1"/>
+                            <field name="total_value" readonly="1"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Period Activity (本期動態)">
+                        <group>
+                            <field name="period_loaned" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="period_returned" readonly="1"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Notes" name="notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Container Ledger Search View -->
+    <record id="chemical_container_ledger_view_search" model="ir.ui.view">
+        <field name="name">chemical.container.ledger.view.search</field>
+        <field name="model">chemical.container.ledger</field>
+        <field name="arch" type="xml">
+            <search string="Container Ledger">
+                <field name="partner_id"/>
+                <field name="container_spec_id"/>
+                <separator/>
+                <filter string="Has Loaned Balance" name="filter_loaned" domain="[('balance_loaned', '>', 0)]"/>
+                <filter string="Has Customer Drums" name="filter_customer_owned" domain="[('balance_customer_owned', '>', 0)]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Customer" name="groupby_partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Container Type" name="groupby_container" context="{'group_by': 'container_spec_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Pivot View for Analysis -->
+    <record id="chemical_container_ledger_view_pivot" model="ir.ui.view">
+        <field name="name">chemical.container.ledger.view.pivot</field>
+        <field name="model">chemical.container.ledger</field>
+        <field name="arch" type="xml">
+            <pivot string="Container Ledger Analysis">
+                <field name="partner_id" type="row"/>
+                <field name="container_spec_id" type="col"/>
+                <field name="balance_loaned" type="measure"/>
+                <field name="balance_customer_owned" type="measure"/>
+                <field name="total_deposit" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Container Ledger Action -->
+    <record id="action_chemical_container_ledger" model="ir.actions.act_window">
+        <field name="name">Container Ledger</field>
+        <field name="res_model">chemical.container.ledger</field>
+        <field name="view_mode">tree,form,pivot</field>
+        <field name="search_view_id" ref="chemical_container_ledger_view_search"/>
+        <field name="context">{'search_default_filter_loaned': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No container ledger entries yet
+            </p>
+            <p>
+                Container ledger tracks drum loans and customer-owned containers.
+                Entries are created automatically when processing drum transactions.
+            </p>
+        </field>
+    </record>
+</odoo>

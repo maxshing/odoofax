@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- MRP BOM - BLENDING RECIPE EXTENSION                         -->
+    <!-- ============================================================ -->
+
+    <!-- Extend BOM Form View -->
+    <record id="view_mrp_bom_form_extension" model="ir.ui.view">
+        <field name="name">mrp.bom.form.chemical.extension</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='properties']" position="after">
+                <group string="Blending Recipe Configuration" name="blending_config" invisible="not is_blending_recipe">
+                    <group>
+                        <field name="is_blending_recipe"/>
+                        <field name="mixing_workcenter_id"/>
+                    </group>
+                    <group>
+                        <field name="nitrogen_purge_required"/>
+                        <field name="nitrogen_purge_duration" invisible="not nitrogen_purge_required"/>
+                    </group>
+                </group>
+                <group string="Process Parameters" name="process_params" invisible="not is_blending_recipe">
+                    <group>
+                        <field name="stirring_speed"/>
+                        <field name="stirring_duration"/>
+                    </group>
+                </group>
+                <group string="Quality Specifications" name="qc_specs" invisible="not is_blending_recipe">
+                    <group>
+                        <field name="moisture_spec_max"/>
+                        <field name="particle_spec_max"/>
+                    </group>
+                    <group>
+                        <field name="viscosity_spec_min"/>
+                        <field name="viscosity_spec_max"/>
+                    </group>
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='type']" position="after">
+                <field name="is_blending_recipe"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- MRP PRODUCTION - BLENDING ORDER EXTENSION                   -->
+    <!-- ============================================================ -->
+
+    <!-- Extend Manufacturing Order Form View -->
+    <record id="view_mrp_production_form_extension" model="ir.ui.view">
+        <field name="name">mrp.production.form.chemical.extension</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_send_recipe_to_plc" 
+                        string="Send Recipe to PLC" 
+                        type="object" 
+                        class="btn-primary"
+                        invisible="not is_blending_order or plc_recipe_sent"/>
+                <button name="action_send_recipe_to_plc" 
+                        string="Resend Recipe to PLC" 
+                        type="object" 
+                        class="btn-secondary"
+                        invisible="not is_blending_order or not plc_recipe_sent"/>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <notebook position="inside">
+                    <page string="Blending Control" name="blending_control" invisible="not is_blending_order">
+                        <group>
+                            <group string="PLC Status">
+                                <field name="plc_recipe_sent"/>
+                                <field name="plc_sent_time"/>
+                            </group>
+                            <group string="Process Status">
+                                <field name="nitrogen_purge_triggered"/>
+                                <field name="nitrogen_purge_count"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Quality Control">
+                                <field name="qc_check_a_passed" widget="boolean_toggle"/>
+                                <field name="qc_check_b_passed" widget="boolean_toggle"/>
+                            </group>
+                            <group string="Transfer">
+                                <field name="transfer_picking_id"/>
+                            </group>
+                        </group>
+                        <group string="PLC Recipe Payload" invisible="not plc_recipe_payload">
+                            <field name="plc_recipe_payload" nolabel="1" widget="ace" options="{'mode': 'json'}" colspan="2"/>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- MRP PRODUCTION - SEARCH FILTER FOR BLENDING                 -->
+    <!-- ============================================================ -->
+
+    <record id="view_mrp_production_search_extension" model="ir.ui.view">
+        <field name="name">mrp.production.search.chemical.extension</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.view_mrp_production_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='todo']" position="after">
+                <separator/>
+                <filter name="filter_blending" string="Blending Orders" domain="[('is_blending_order', '=', True)]"/>
+                <filter name="filter_plc_pending" string="PLC Pending" domain="[('is_blending_order', '=', True), ('plc_recipe_sent', '=', False)]"/>
+                <filter name="filter_qc_pending" string="QC Pending" domain="[('is_blending_order', '=', True), '|', ('qc_check_a_passed', '=', False), ('qc_check_b_passed', '=', False)]"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
