@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Container Specification Tree View -->
+    <record id="chemical_container_spec_view_tree" model="ir.ui.view">
+        <field name="name">chemical.container.spec.view.tree</field>
+        <field name="model">chemical.container.spec</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="material"/>
+                <field name="volume_type"/>
+                <field name="lid_type"/>
+                <field name="deposit_amount"/>
+                <field name="buyback_price"/>
+                <field name="is_returnable"/>
+                <field name="active" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Container Specification Form View -->
+    <record id="chemical_container_spec_view_form" model="ir.ui.view">
+        <field name="name">chemical.container.spec.view.form</field>
+        <field name="model">chemical.container.spec</field>
+        <field name="arch" type="xml">
+            <form string="Container Specification">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="active"/>
+                    
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="Container Name (Auto-generated)"/></h1>
+                    </div>
+                    
+                    <group>
+                        <group string="Specification Details">
+                            <field name="code"/>
+                            <field name="material"/>
+                            <field name="volume_type"/>
+                            <field name="lid_type"/>
+                            <field name="volume_liters" readonly="1"/>
+                            <field name="tare_weight"/>
+                        </group>
+                        <group string="Pricing &amp; Options">
+                            <field name="is_returnable"/>
+                            <field name="deposit_amount" invisible="not is_returnable"/>
+                            <field name="buyback_price" invisible="not is_returnable"/>
+                            <field name="legacy_codes"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Additional notes about this container specification..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Container Specification Search View -->
+    <record id="chemical_container_spec_view_search" model="ir.ui.view">
+        <field name="name">chemical.container.spec.view.search</field>
+        <field name="model">chemical.container.spec</field>
+        <field name="arch" type="xml">
+            <search string="Container Specifications">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="material"/>
+                <field name="legacy_codes"/>
+                <separator/>
+                <filter string="Steel" name="filter_steel" domain="[('material', '=', 'steel')]"/>
+                <filter string="HDPE" name="filter_hdpe" domain="[('material', '=', 'hdpe')]"/>
+                <filter string="PP" name="filter_pp" domain="[('material', '=', 'pp')]"/>
+                <filter string="Stainless" name="filter_sus" domain="[('material', '=', 'sus')]"/>
+                <separator/>
+                <filter string="200L Drums" name="filter_200l" domain="[('volume_type', '=', '200l')]"/>
+                <filter string="IBC 1000L" name="filter_1000l" domain="[('volume_type', '=', '1000l')]"/>
+                <separator/>
+                <filter string="Returnable" name="filter_returnable" domain="[('is_returnable', '=', True)]"/>
+                <filter string="Archived" name="filter_archived" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Material" name="groupby_material" context="{'group_by': 'material'}"/>
+                    <filter string="Volume" name="groupby_volume" context="{'group_by': 'volume_type'}"/>
+                    <filter string="Lid Type" name="groupby_lid" context="{'group_by': 'lid_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Container Specification Action -->
+    <record id="action_chemical_container_spec" model="ir.actions.act_window">
+        <field name="name">Container Specifications</field>
+        <field name="res_model">chemical.container.spec</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="chemical_container_spec_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Define your container specifications
+            </p>
+            <p>
+                Container specifications define the material, volume, and lid type for each container.
+                This replaces the legacy coding system (9172, 9175, P, S, etc.)
+            </p>
+        </field>
+    </record>
+</odoo>
