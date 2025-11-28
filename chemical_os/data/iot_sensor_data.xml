@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <!-- ============================================================ -->
+        <!-- EQUIPMENT METERING CONFIGURATION                            -->
+        <!-- Mark Pump 1 and Pump 3 as metered (have Mass Flow Meters)   -->
+        <!-- ============================================================ -->
+
+        <record id="equipment_pump1" model="maintenance.equipment">
+            <field name="is_metered">True</field>
+        </record>
+
+        <record id="equipment_pump3" model="maintenance.equipment">
+            <field name="is_metered">True</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- IOT POINTS - PUMP FLOW METERS (FIT)                         -->
+        <!-- Mass Flow Meters on metered pumps                           -->
+        <!-- ============================================================ -->
+
+        <!-- FIT-P1: Flow Indicator/Transmitter on Pump 1 -->
+        <record id="iot_point_fit_p1" model="chemical.iot.point">
+            <field name="name">FIT-P1</field>
+            <field name="description">Mass Flow Meter - Pump 1 (Source: A01, A02)</field>
+            <field name="point_type">flow</field>
+            <field name="location_type">pump</field>
+            <field name="pump_id" ref="equipment_pump1"/>
+            <field name="state">active</field>
+            <field name="variance_threshold">2.0</field>
+        </record>
+
+        <!-- FIT-P3: Flow Indicator/Transmitter on Pump 3 -->
+        <record id="iot_point_fit_p3" model="chemical.iot.point">
+            <field name="name">FIT-P3</field>
+            <field name="description">Mass Flow Meter - Pump 3 (Source: A05, A06)</field>
+            <field name="point_type">flow</field>
+            <field name="location_type">pump</field>
+            <field name="pump_id" ref="equipment_pump3"/>
+            <field name="state">active</field>
+            <field name="variance_threshold">2.0</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- IOT POINTS - FILLING MACHINE FLOW METERS (FIT)              -->
+        <!-- Mass Flow Meters on filling machines F1 and F2              -->
+        <!-- ============================================================ -->
+
+        <!-- FIT-F1: Flow Meter on Fully Auto Drum Filler -->
+        <record id="iot_point_fit_f1" model="chemical.iot.point">
+            <field name="name">FIT-F1</field>
+            <field name="description">Mass Flow Meter - Auto Drum Filler (F1)</field>
+            <field name="point_type">flow</field>
+            <field name="location_type">filler</field>
+            <field name="workcenter_id" ref="workcenter_f1"/>
+            <field name="state">active</field>
+            <field name="variance_threshold">2.0</field>
+            <field name="cross_check_point_id" ref="iot_point_fit_p1"/>
+        </record>
+
+        <!-- FIT-F2: Flow Meter on Semi-Auto Drum Filler -->
+        <record id="iot_point_fit_f2" model="chemical.iot.point">
+            <field name="name">FIT-F2</field>
+            <field name="description">Mass Flow Meter - Semi-Auto Drum Filler (F2)</field>
+            <field name="point_type">flow</field>
+            <field name="location_type">filler</field>
+            <field name="workcenter_id" ref="workcenter_f2"/>
+            <field name="state">active</field>
+            <field name="variance_threshold">2.0</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- IOT POINTS - TANK INLET FLOW METERS (FIT)                   -->
+        <!-- Mass Flow Meters for verifying receipts at Tank Farm C      -->
+        <!-- ============================================================ -->
+
+        <!-- FIT-C1_Inlet: Tank C01 Inlet Flow Meter -->
+        <record id="iot_point_fit_c01_inlet" model="chemical.iot.point">
+            <field name="name">FIT-C01-IN</field>
+            <field name="description">Inlet Flow Meter - Tank C01</field>
+            <field name="point_type">flow</field>
+            <field name="location_type">tank_inlet</field>
+            <field name="tank_location_id" ref="location_tank_c01"/>
+            <field name="state">active</field>
+        </record>
+
+        <!-- FIT-C2_Inlet: Tank C02 Inlet Flow Meter -->
+        <record id="iot_point_fit_c02_inlet" model="chemical.iot.point">
+            <field name="name">FIT-C02-IN</field>
+            <field name="description">Inlet Flow Meter - Tank C02</field>
+            <field name="point_type">flow</field>
+            <field name="location_type">tank_inlet</field>
+            <field name="tank_location_id" ref="location_tank_c02"/>
+            <field name="state">active</field>
+        </record>
+
+        <!-- FIT-C3_Inlet: Tank C03 Inlet Flow Meter -->
+        <record id="iot_point_fit_c03_inlet" model="chemical.iot.point">
+            <field name="name">FIT-C03-IN</field>
+            <field name="description">Inlet Flow Meter - Tank C03</field>
+            <field name="point_type">flow</field>
+            <field name="location_type">tank_inlet</field>
+            <field name="tank_location_id" ref="location_tank_c03"/>
+            <field name="state">active</field>
+        </record>
+
+        <!-- FIT-C4_Inlet: Tank C04 Inlet Flow Meter -->
+        <record id="iot_point_fit_c04_inlet" model="chemical.iot.point">
+            <field name="name">FIT-C04-IN</field>
+            <field name="description">Inlet Flow Meter - Tank C04</field>
+            <field name="point_type">flow</field>
+            <field name="location_type">tank_inlet</field>
+            <field name="tank_location_id" ref="location_tank_c04"/>
+            <field name="state">active</field>
+        </record>
+
+        <!-- FIT-C5_Inlet: Tank C05 Inlet Flow Meter -->
+        <record id="iot_point_fit_c05_inlet" model="chemical.iot.point">
+            <field name="name">FIT-C05-IN</field>
+            <field name="description">Inlet Flow Meter - Tank C05</field>
+            <field name="point_type">flow</field>
+            <field name="location_type">tank_inlet</field>
+            <field name="tank_location_id" ref="location_tank_c05"/>
+            <field name="state">active</field>
+        </record>
+
+        <!-- FIT-C6_Inlet: Tank C06 Inlet Flow Meter -->
+        <record id="iot_point_fit_c06_inlet" model="chemical.iot.point">
+            <field name="name">FIT-C06-IN</field>
+            <field name="description">Inlet Flow Meter - Tank C06</field>
+            <field name="point_type">flow</field>
+            <field name="location_type">tank_inlet</field>
+            <field name="tank_location_id" ref="location_tank_c06"/>
+            <field name="state">active</field>
+        </record>
+
+        <!-- FIT-C7_Inlet: Tank C07 Inlet Flow Meter -->
+        <record id="iot_point_fit_c07_inlet" model="chemical.iot.point">
+            <field name="name">FIT-C07-IN</field>
+            <field name="description">Inlet Flow Meter - Tank C07</field>
+            <field name="point_type">flow</field>
+            <field name="location_type">tank_inlet</field>
+            <field name="tank_location_id" ref="location_tank_c07"/>
+            <field name="state">active</field>
+        </record>
+
+        <!-- FIT-C8_Inlet: Tank C08 Inlet Flow Meter -->
+        <record id="iot_point_fit_c08_inlet" model="chemical.iot.point">
+            <field name="name">FIT-C08-IN</field>
+            <field name="description">Inlet Flow Meter - Tank C08</field>
+            <field name="point_type">flow</field>
+            <field name="location_type">tank_inlet</field>
+            <field name="tank_location_id" ref="location_tank_c08"/>
+            <field name="state">active</field>
+        </record>
+
+        <!-- FIT-C9_Inlet: Tank C09 Inlet Flow Meter -->
+        <record id="iot_point_fit_c09_inlet" model="chemical.iot.point">
+            <field name="name">FIT-C09-IN</field>
+            <field name="description">Inlet Flow Meter - Tank C09</field>
+            <field name="point_type">flow</field>
+            <field name="location_type">tank_inlet</field>
+            <field name="tank_location_id" ref="location_tank_c09"/>
+            <field name="state">active</field>
+        </record>
+
+        <!-- FIT-C10_Inlet: Tank C10 Inlet Flow Meter -->
+        <record id="iot_point_fit_c10_inlet" model="chemical.iot.point">
+            <field name="name">FIT-C10-IN</field>
+            <field name="description">Inlet Flow Meter - Tank C10</field>
+            <field name="point_type">flow</field>
+            <field name="location_type">tank_inlet</field>
+            <field name="tank_location_id" ref="location_tank_c10"/>
+            <field name="state">active</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- IOT POINTS - TANK LEVEL/PRESSURE SENSORS (LIT/PIT)          -->
+        <!-- Differential Pressure sensors for level measurement         -->
+        <!-- ============================================================ -->
+
+        <!-- Sample DP sensors for key tanks -->
+        <record id="iot_point_lit_a01" model="chemical.iot.point">
+            <field name="name">LIT-A01</field>
+            <field name="description">Level Transmitter - Tank A01 (DP Sensor)</field>
+            <field name="point_type">level</field>
+            <field name="location_type">tank_level</field>
+            <field name="tank_location_id" ref="location_tank_a01"/>
+            <field name="state">active</field>
+        </record>
+
+        <record id="iot_point_lit_a02" model="chemical.iot.point">
+            <field name="name">LIT-A02</field>
+            <field name="description">Level Transmitter - Tank A02 (DP Sensor)</field>
+            <field name="point_type">level</field>
+            <field name="location_type">tank_level</field>
+            <field name="tank_location_id" ref="location_tank_a02"/>
+            <field name="state">active</field>
+        </record>
+
+        <record id="iot_point_lit_a05" model="chemical.iot.point">
+            <field name="name">LIT-A05</field>
+            <field name="description">Level Transmitter - Tank A05 (DP Sensor)</field>
+            <field name="point_type">level</field>
+            <field name="location_type">tank_level</field>
+            <field name="tank_location_id" ref="location_tank_a05"/>
+            <field name="state">active</field>
+        </record>
+
+        <record id="iot_point_lit_a06" model="chemical.iot.point">
+            <field name="name">LIT-A06</field>
+            <field name="description">Level Transmitter - Tank A06 (DP Sensor)</field>
+            <field name="point_type">level</field>
+            <field name="location_type">tank_level</field>
+            <field name="tank_location_id" ref="location_tank_a06"/>
+            <field name="state">active</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- FLOW-TO-STOCK ENGINE INSTANCE                               -->
+        <!-- ============================================================ -->
+
+        <record id="flow_engine_main" model="chemical.flow.engine">
+            <field name="name">Main Flow-to-Stock Engine</field>
+            <field name="state">running</field>
+        </record>
+
+    </data>
+</odoo>

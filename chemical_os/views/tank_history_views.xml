@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Tank History Tree View -->
+    <record id="view_tank_history_tree" model="ir.ui.view">
+        <field name="name">chemical.tank.history.tree</field>
+        <field name="model">chemical.tank.history</field>
+        <field name="arch" type="xml">
+            <list string="Tank History" decoration-success="operation_type=='fill'" decoration-warning="operation_type=='draw'" decoration-info="operation_type in ('cleaning', 'maintenance')">
+                <field name="reference"/>
+                <field name="operation_date"/>
+                <field name="location_id"/>
+                <field name="operation_type" widget="badge"/>
+                <field name="product_id"/>
+                <field name="lot_id" optional="show"/>
+                <field name="quantity"/>
+                <field name="quantity_before"/>
+                <field name="quantity_after"/>
+                <field name="user_id"/>
+                <field name="notes" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Tank History Form View -->
+    <record id="view_tank_history_form" model="ir.ui.view">
+        <field name="name">chemical.tank.history.form</field>
+        <field name="model">chemical.tank.history</field>
+        <field name="arch" type="xml">
+            <form string="Tank History Record">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reference" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Operation Details">
+                            <field name="tank_content_id"/>
+                            <field name="location_id"/>
+                            <field name="operation_type"/>
+                            <field name="operation_date"/>
+                            <field name="user_id"/>
+                        </group>
+                        <group string="Quantity">
+                            <field name="quantity"/>
+                            <field name="uom_id"/>
+                            <field name="quantity_before"/>
+                            <field name="quantity_after"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Product">
+                            <field name="product_id"/>
+                            <field name="lot_id"/>
+                        </group>
+                        <group string="Transfer Details" invisible="operation_type not in ('transfer_in', 'transfer_out')">
+                            <field name="source_location_id"/>
+                            <field name="dest_location_id"/>
+                        </group>
+                    </group>
+                    <group string="Additional Information">
+                        <field name="stock_move_id" readonly="1"/>
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tank History Search View -->
+    <record id="view_tank_history_search" model="ir.ui.view">
+        <field name="name">chemical.tank.history.search</field>
+        <field name="model">chemical.tank.history</field>
+        <field name="arch" type="xml">
+            <search string="Search Tank History">
+                <field name="reference"/>
+                <field name="location_id"/>
+                <field name="product_id"/>
+                <field name="lot_id"/>
+                <field name="user_id"/>
+                <separator/>
+                <filter name="filter_fill" string="Fill Operations" domain="[('operation_type', '=', 'fill')]"/>
+                <filter name="filter_draw" string="Draw Operations" domain="[('operation_type', '=', 'draw')]"/>
+                <filter name="filter_transfer" string="Transfers" domain="[('operation_type', 'in', ('transfer_in', 'transfer_out'))]"/>
+                <filter name="filter_cleaning" string="Cleaning" domain="[('operation_type', '=', 'cleaning')]"/>
+                <separator/>
+                <filter name="filter_today" string="Today" domain="[('operation_date', '>=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+                <filter name="filter_week" string="This Week" domain="[('operation_date', '>=', (datetime.datetime.combine(context_today(), datetime.time(0,0,0)) - relativedelta(days=7)))]"/>
+                <filter name="filter_month" string="This Month" domain="[('operation_date', '>=', (datetime.datetime.combine(context_today(), datetime.time(0,0,0)) - relativedelta(months=1)))]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_location" string="Tank" context="{'group_by': 'location_id'}"/>
+                    <filter name="group_by_product" string="Product" context="{'group_by': 'product_id'}"/>
+                    <filter name="group_by_operation" string="Operation Type" context="{'group_by': 'operation_type'}"/>
+                    <filter name="group_by_date" string="Date" context="{'group_by': 'operation_date:day'}"/>
+                    <filter name="group_by_user" string="Operator" context="{'group_by': 'user_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Tank History Action -->
+    <record id="action_tank_history" model="ir.actions.act_window">
+        <field name="name">Tank History</field>
+        <field name="res_model">chemical.tank.history</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_tank_history_search"/>
+        <field name="context">{'search_default_filter_today': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No tank operations recorded yet
+            </p>
+            <p>
+                Tank history records are automatically created when you perform fill, draw, or transfer operations on tanks.
+            </p>
+        </field>
+    </record>
+
+    <!-- Sequence for Tank History Reference -->
+    <record id="seq_tank_history" model="ir.sequence">
+        <field name="name">Tank History Reference</field>
+        <field name="code">chemical.tank.history</field>
+        <field name="prefix">TH/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+</odoo>

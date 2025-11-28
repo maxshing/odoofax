@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- CONTAINER LEDGER PARTNER ACTION                              -->
+    <!-- ============================================================ -->
+
+    <!-- Action to view partner container ledger -->
+    <record id="action_partner_container_ledger" model="ir.actions.act_window">
+        <field name="name">Container Ledger</field>
+        <field name="res_model">chemical.container.ledger</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No container ledger entries
+            </p>
+            <p>
+                Container balances are tracked automatically when drums are loaned or returned.
+            </p>
+        </field>
+    </record>
+
+</odoo>
