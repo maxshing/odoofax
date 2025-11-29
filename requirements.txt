@@ -1,0 +1,3 @@
+# Python dependencies for Odoo.sh deployment
+# All modules use only Odoo built-in libraries and Python standard library
+# No additional dependencies required
