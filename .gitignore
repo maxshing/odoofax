@@ -70,7 +70,6 @@ venv.bak/
 *.sublime-project
 
 # Odoo specific
-*.pyc
 static/src/img/icon.svg
 filestore/
 sessions/

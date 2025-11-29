@@ -74,7 +74,7 @@ Dependencies: `base`, `mail`, `contacts`
 1. **Create a new Odoo.sh project:**
    - Go to [odoo.sh](https://www.odoo.sh)
    - Click "Create Project"
-   - Select your GitHub repository (`odoofax`)
+   - Select your GitHub repository
 
 2. **Configure the branch:**
    - Odoo.sh will automatically detect the Odoo modules in the repository
